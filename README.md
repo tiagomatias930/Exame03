@@ -16,15 +16,8 @@ Este repositório contém as implementações das funções `get_next_line` e `f
 
 ## 📂 Estrutura do Repositório
 
-- **`get_next_line/`**: Contém os arquivos fonte da implementação do `get_next_line`.
   - `get_next_line.c`
-  - `get_next_line_utils.c`
-  - `get_next_line.h`
-  
-- **`ft_printf/`**: Contém os arquivos fonte da implementação do `ft_printf`.
   - `ft_printf.c`
-  - `ft_printf_utils.c`
-  - `ft_printf.h`
 
 ## 🛠️ Compilação e Execução
 
