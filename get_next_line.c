@@ -1,7 +1,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int	ft_str_length(char *string)
+#ifndef BUZZER_SIZE_H
+# define BUZZER_SIZE 42
+#endif
+
+int	ft_strlen(char *string)
 {
 	int	index;
 
@@ -17,7 +21,7 @@ char	*ft_str_duplicate(char *string)
 	int		length;
 	char	*duplicate;
 
-	length = ft_str_length(string);
+	length = ft_strlen(string);
 	index = 0;
 	duplicate = (char *)malloc(sizeof(char) * length + 1);
 	if (!duplicate)
@@ -33,24 +37,30 @@ char	*ft_str_duplicate(char *string)
 
 char	*get_next_line(int fd)
 {
-	int		n;
-	int		index;
-	char	character;
-	char	buffer[7000000];
+	static	char chr [BUZZER_SIZE];
+	char	str[7000000];
+	static	int 	b_posi;
+	static	int	b_size;
+	int	i;
 
-	index = 0;
+	i = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	n = read(fd, &character, 1);
-	while (n > 0)
+	while (1)
 	{
-		buffer[index++] = character;
-		if (character == '\n')
+		if (b_posi >= b_size)
+		{
+			b_size = read(fd, chr, BUFFER_SIZE);
+			b_posi = 0;
+			if (b_size <= 0)
+				break ;
+		}
+		str[i++] = chr[b_posi++];
+		if (str[i - 1] == '\n')
 			break ;
-		n = read(fd, &character, 1);
 	}
-	if (n <= 0 && index == 0)
+	str[i] = '\0';
+	if (i == 0)
 		return (NULL);
-	buffer[index] = '\0';
-	return (ft_str_duplicate(buffer));
+	return (ft_str_duplicate(str));
 }
