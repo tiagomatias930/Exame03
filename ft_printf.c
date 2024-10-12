@@ -50,6 +50,7 @@ int ft_printf(const char   *format, ...)
     return (va_end(ptr), len);
 }
 
+/* Teste
 int main()
 {
     ft_printf("Ola mundo\n");
@@ -57,4 +58,4 @@ int main()
     ft_printf("%x\n", 12);
 
     return(0);
-}
+}*/
