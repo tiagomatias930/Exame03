@@ -1,46 +1,39 @@
-#include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-#ifndef BUZZER_SIZE_H
-# define BUZZER_SIZE 42
+#ifndef BUFFER_SIZE_H
+# define BUFFER_SIZE 43
 #endif
 
-int	ft_strlen(char *string)
+char	*str_dup(char *str)
 {
-	int	index;
+	int		i;
+	int		len;
+	char	*text;
 
-	index = 0;
-	while (string[index] != '\0')
-		index++;
-	return (index);
-}
-
-char	*ft_str_duplicate(char *string)
-{
-	int		index;
-	int		length;
-	char	*duplicate;
-
-	length = ft_strlen(string);
-	index = 0;
-	duplicate = (char *)malloc(sizeof(char) * length + 1);
-	if (!duplicate)
+	i = 0;
+	while (str[len++])
+		;
+	text = malloc(sizeof(char) * len + 1);
+	if (!text)
 		return (NULL);
-	while (string[index] != '\0')
+	while (str[i])
 	{
-		duplicate[index] = string[index];
-		index++;
+		text[i] = str[i];
+		i++;
 	}
-	duplicate[index] = '\0';
-	return (duplicate);
+	text[i] = '\0';
+	return (text);
 }
 
 char	*get_next_line(int fd)
 {
-	static	char chr [BUZZER_SIZE];
+	static	char	chr[BUFFER_SIZE];
 	char	str[7000000];
-	static	int 	b_posi;
 	static	int	b_size;
+	static	int	b_pos;
 	int	i;
 
 	i = 0;
@@ -48,19 +41,19 @@ char	*get_next_line(int fd)
 		return (NULL);
 	while (1)
 	{
-		if (b_posi >= b_size)
+		if (b_pos >= b_size)
 		{
 			b_size = read(fd, chr, BUFFER_SIZE);
-			b_posi = 0;
+			b_pos = 0;
 			if (b_size <= 0)
 				break ;
 		}
-		str[i++] = chr[b_posi++];
-		if (str[i - 1] == '\n')
-			break ;
+		str[i++] = chr[b_pos++];
+		if (str[i - 1 ] == '\n')
+			break;
 	}
 	str[i] = '\0';
 	if (i == 0)
 		return (NULL);
-	return (ft_str_duplicate(str));
+	return (str_dup(str));
 }
